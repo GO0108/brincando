@@ -1,0 +1,159 @@
+# DESAFIO - QUIZ DE UM JOGO
+
+""" Um caro amigo gamer, jogador de 'Overwatch' pediu a você, programador, uma ajuda para desenvolver um certo programa. O rapaz é indeciso em qual
+personagem do jogo escolher, e mais indeciso ainda em qual classe (tipo de personagem) de personagem jogar.
+
+A) Desenvolva um programa que devolva um personagem aleatório do jogo ao usuário. Além disso, adicione a opção do usuário poder escolher qual classe(dps,
+suporte ou tank) ele quer jogar.
+
+B) Seu amigo, observando suas habilidades incríveis de Python Básico, perguntou se você consegue programar algum jogo para vocês dois jogarem.
+Desenvolva um quiz com os personagens de 'Overwatch'.   """
+
+import random  # Escolha pseudoaleatória
+import os  # Limpar tela
+import sys
+
+
+def limpar():
+    os.system('cls')
+
+
+# Questão A
+def heroi_aleatorio():
+    while True:
+        opcao = int(input('0- Escolher personagem aleatório'
+                          '\n1- Escolher classe\n'))
+        if opcao == 1 or opcao == 0:
+            break
+
+    if opcao:
+        print('Escolha sua classe: ')
+        while True:
+            opcao = int(input('0- Tank'
+                              '\n1- DPS\n'
+                              '2 - Suporte\n'))
+
+            if opcao == 2 or opcao == 1 or opcao == 0:
+                break
+        # Devolvendo personagem por classe aleatoriamente
+        if not opcao:
+            return 'Tank escolhido: ' + random.choice(list(tank.values())).capitalize()  # Tank
+        elif opcao == 1:
+            return 'DPS escolhido: ' + random.choice(list(dps.values())).capitalize()  # DPS
+
+        return 'Suporte escolhido: ' + random.choice(list(suporte.values())).capitalize()  # Suporte
+
+    return 'Personagem escolhido: ' + random.choice(list(personagens_aleatorio.values())).capitalize()  # personagem aleatorio
+
+
+# Questão B
+def quiz_overwatch():
+    acertos = 0
+
+    print('\n***Lista dos personagens***')
+    for j in range(3):  # imprime todos os personagens das 3 classes
+        print(*[i.capitalize() + '-' for i in classe[j].values()], end='')
+        sys.stdout.write("\b")  # apaga ultimo '-'
+        print()
+
+    print('\n(Observação: Ao colocar sua resposta, copie exatamente o nome do personagem!)\n'
+          ' A qual personagem essa habilidade pertence?\n')
+
+    numero_perguntas = 5
+    for i in range(numero_perguntas):
+
+        pergunta = random.choice(list(personagens_aleatorio.keys()))
+        print('-->' + random.choice(pergunta).capitalize())
+        # Basicamente, esse processo escolhe aleatoriamente uma chave,a correspondendo como valor da pergunta
+        # Em seguida é imprimida um dos elementos dessa chave (que é uma tupla)
+        # No fim, o jogador deve enviar uma resposta que corresponda ao valor designado para essa chave(pergunta)
+
+        while True:                   # Recebendo resposta do jogador
+            resposta = str(input(f'Resposta {i + 1}: ')).lower()
+
+            if resposta in personagens_aleatorio.values():
+                break
+            else:
+                print('Digite Corretamente!!')
+
+        if resposta == personagens_aleatorio[pergunta]:
+            acertos += 1
+            print('CORRETO :)')
+        else:
+            print('ERRADO :(')
+            print(f'Resposta correta:{personagens_aleatorio[pergunta].capitalize()}')
+
+    print(f'\nVocê acertou {acertos} de {numero_perguntas}')
+
+    if not acertos:
+        print('Você sabe bem pouco do jogo')
+    if acertos == numero_perguntas:
+        print('Parabéns você sabe muito do jogo!!!\nJOGADA DA PARTIDA')  # Easter Eggs para % de acertos
+
+
+def menu():
+    print('Selecione opção: ')
+    while True:
+        opcao = int(input(('0- Herói aleátorio'
+                           '\n1- Adivinhar Herói\n')))
+        if opcao == 1 or opcao == 0:
+            break
+
+    if opcao:
+        limpar()
+        quiz_overwatch()  # Jogar
+    else:
+        limpar()
+        print(heroi_aleatorio())  # Escolher personagem aleatorio
+
+    print('-----------\n'
+          'Continuar programa?')
+    opcao = int(input(('0- Sim, continuar'
+                       '\n1- Não, sair\n')))
+
+    if not opcao:
+        limpar()
+        print('-----------')
+        menu()
+
+
+# OBS: o uso de dicionários facilita o programa, contudo, trabalhosamente mas não dificilmente, semelhante como feito na questão 1 da
+# prova, o programa pode ser convertido para o uso de listas e obedecer a grade curricular da matéria de IP
+
+# Aqui, estou categorizando por classe, nome das habilidades e nome das 32 personagens
+
+dps = {('DINAMITE', 'B.O.B.'): 'ashe', ('CONFIGURAÇÃO: SENTINELA', 'AUTO REPARO'): 'bastion',
+       ('GANCHO ASCENDENTE', 'ABALO SÍSMICO'): 'doomfist', ('FEIXE CONCENTRADO', 'DUPLICAR'): 'echo',
+       ('SHURIKEN', 'LÂMINA DO DRAGÃO'): 'genji', ('FLECHA SÔNICA', 'GOLPE DO DRAGÃO'): 'hanzo',
+       ('MINA DE CONCUSSÃO', 'PNEU DA MORTE'): 'junkrat', ('CLARÃO', 'TIRO CERTEIRO'): 'mccree',
+       ('MURALHA DE GELO', 'CONGELAMENTO CRIOGÊNICO'): 'mei', ('EXPLOSÃO CONCUSSIVA', 'BOMBARDEIO'): 'pharah',
+       ('DESABROCHAR DA MORTE', 'PASSOS DAS SOMBRAS'): 'reaper', ('FOGUETES HÉLIX', 'VISOR TÁTICO'): 'soldado 76',
+       ('PEM', 'HACKEAR'): 'sombra', ('TELETRANSPORTADOR', 'BARREIRA DE FÓTONS'): 'symmetra',
+       ('MARTELO DE FORJA', 'NÚCLEO FUNDIDO'): 'torbjorn',
+       ('BOMBA ELETROMAGNÉTICA', 'PISTOLAS ELETROMAGNÉTICAS'): 'tracer',
+       ('MINA VENENOSA', 'ARPÉU'): 'windowmaker'}
+
+suporte = {('GRANADA BIÓTICA', 'DARDO SONÍFERO'): 'ana', ('MATRIZ AMPLIFICADORA', 'CAMPO DE IMORTALIDADE'): 'baptiste',
+           ('KIT DE REPAROS', 'GOLPE DE ESCUDO'): 'brigitte', ('BARREIRA DE SOM', 'SOLTA O SOM'): 'lucio',
+           ('ANJO DA GUARDA', 'RESSURREIÇÃO'): 'mercy', ('COALESCÊNCIA', 'ORBE BIÓTICO'): 'moira',
+           ('ORBE DA DISCÓRDIA', 'TRANSCENDÊNCIA'): 'zenyatta'}
+
+tank = {('Matriz de Defesa', 'Autodestuir'): 'dva', ('BARREIRA PROTETORA', 'FORTIFICAR'): 'orisa',
+        ('MARTELO PROPULSOR', 'ABALO TERRESTRE'): 'reinhardt', ('PEGANDO FÔLEGO', 'CORRENTE DE GANCHO'): 'roadhog',
+        ('FLUXO GRAVITACIONAL', 'ACREÇÃO'): 'sigma', ('CANHÃO DE TESLA', 'FÚRIA PRIMATA'): 'winston',
+        ('ESCUDO ADAPTATIVO', 'BATE-ESTACA'): 'hammond', ('BARREIRA DE PARTÍCULAS', 'SURTO DE GRÁVITONS'): 'zarya'}
+
+classe = [tank, dps, suporte]
+personagens_aleatorio = {**tank, **dps, **suporte} # unindo dicionários
+
+
+menu()
+
+'''
+from PIL import Image
+
+#read the image
+im = Image.open("sample-image.png")
+
+#show image
+im.show()'''
